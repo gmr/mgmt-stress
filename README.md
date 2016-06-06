@@ -1,7 +1,11 @@
 # RabbitMQ Stress Test Tool
 
 The goal of the app is to cause the RabbitMQ management UI to fall over due
-to a high velocity of channel turn over across a modest amount of connections.
+to a high velocity of channel churn across a modest amount of connections.
+
+If a single channel is specified (``-c 1``), the channels will not churn and
+can provide a good base test case for the connection count and message
+velocity.
 
 ## Build
 

@@ -45,6 +45,7 @@ option_spec() ->
   Host = option_default_host(),
   Port = option_default_port(),
   [
+    {delay,       $D,        "delay",       {integer, 5},      "Test start delay in seconds"},
     {duration,    $d,        "duration",    {integer, 300},    "Number of seconds to run test"},
     {host,        $h,        "host",        {string, Host},    "RabbitMQ host"},
     {port,        $p,        "port",        {integer, Port},   "RabbitMQ port"},
@@ -77,15 +78,16 @@ random_seed() ->
 
 run(Settings) ->
   random_seed(),
-  Duration = proplists:get_value(duration, Settings),
   lager:info("Starting Stress Test Connections"),
   [application:set_env(mgmt_stress, K, V) || {K, V} <- Settings],
   application:ensure_all_started(mgmt_stress),
 
   %% Wait for a few seconds to ensure all connections are connected
-  lager:info("Waiting 5 seconds before starting"),
-  timer:sleep(5000),
+  Delay = proplists:get_value(delay, Settings),
+  lager:info("Waiting ~p seconds before starting", [Delay]),
+  timer:sleep(Delay * 1000),
 
+  Duration = proplists:get_value(duration, Settings),
   lager:info("Starting Stress Test, Duration: ~p seconds", [Duration]),
   Children = supervisor:which_children(mgmt_stress_sup),
   start_timers(Children),

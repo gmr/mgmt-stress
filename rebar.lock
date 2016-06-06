@@ -1,0 +1,5 @@
+[{<<"amqp_client">>,{pkg,<<"amqp_client">>,<<"3.5.6">>},0},
+ {<<"getopt">>,{pkg,<<"getopt">>,<<"0.8.2">>},0},
+ {<<"goldrush">>,{pkg,<<"goldrush">>,<<"0.1.8">>},1},
+ {<<"lager">>,{pkg,<<"lager">>,<<"3.2.0">>},0},
+ {<<"rabbit_common">>,{pkg,<<"rabbit_common">>,<<"3.5.6">>},1}].

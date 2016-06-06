@@ -1,0 +1,14 @@
+{application, mgmt_stress,
+  [{description, "RabbitMQ Management DB Stress Test Tool"},
+    {vsn, "0.1.0"},
+    {registered, []},
+    {applications,
+      [
+        kernel,
+        stdlib,
+        lager,
+        amqp_client
+      ]
+    },
+    {mod, {mgmt_stress_app, []}}
+  ]}.

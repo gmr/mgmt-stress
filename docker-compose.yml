@@ -1,0 +1,13 @@
+%YAML 1.2
+---
+rabbitmq:
+  image: gavinmroy/alpine-rabbitmq-autocluster:latest
+  ports:
+    - 5672
+    - 15672
+
+minimal:
+  image: gavinmroy/alpine-rabbitmq-minimal:latest
+  ports:
+    - 5672
+    - 15672

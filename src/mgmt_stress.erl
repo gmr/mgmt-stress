@@ -78,12 +78,26 @@ random_seed() ->
 run(Settings) ->
   random_seed(),
   Duration = proplists:get_value(duration, Settings),
-  lager:info("Starting Stress Test, Duration: ~p seconds", [Duration]),
+  lager:info("Starting Stress Test Connections"),
   [application:set_env(mgmt_stress, K, V) || {K, V} <- Settings],
   application:ensure_all_started(mgmt_stress),
+
+  %% Wait for a few seconds to ensure all connections are connected
+  lager:info("Waiting 5 seconds before starting"),
+  timer:sleep(5000),
+
+  lager:info("Starting Stress Test, Duration: ~p seconds", [Duration]),
+  Children = supervisor:which_children(mgmt_stress_sup),
+  start_timers(Children),
   timer:sleep(Duration * 1000),
   lager:info("Test complete"),
   application:stop(mgmt_stress).
+
+
+start_timers([]) -> ok;
+start_timers([{Child, _, _, _}|T]) ->
+  gen_server:call(Child, start_timer),
+  start_timers(T).
 
 
 setup_logging() ->

@@ -43,13 +43,14 @@ init({ID, Settings}) ->
       Chan;
     _ -> undefined
   end,
-
-  {ok, Timer} = timer:apply_interval(100, gen_server, cast, [ID, process_interval]),
   {ok, #state{settings=Settings,
               connection=Connection,
               channel=Channel,
-              id=ID,
-              timer=Timer}}.
+              id=ID}}.
+
+handle_call(start_timer, _From, State) ->
+  {ok, Timer} = timer:apply_interval(100, gen_server, cast, [State#state.id, process_interval]),
+  {reply, ok, State#state{timer=Timer}};
 
 handle_call(_Request, _From, State) ->
   {reply, ok, State}.
